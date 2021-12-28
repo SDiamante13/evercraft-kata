@@ -1,33 +1,38 @@
 package tech.pathtoprogramming.evercraft.model
 
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.tuple
 import org.junit.jupiter.api.Test
-
-import tech.pathtoprogramming.evercraft.model.Alignment.*;
+import tech.pathtoprogramming.evercraft.model.Alignment.*
 
 class CharacterTest {
 
     @Test
     fun character_shouldReturnCharacterProperties() {
-        val character = Character("Drew", GOOD, 15, 10);
-
-        assertEquals("Drew", character.name);
-        assertEquals("GOOD", character.alignment.name);
-        assertEquals(15, character.armorClass);
-        assertEquals(10, character.hitPoints);
+        val character = Character(
+            name = "Drew",
+            alignment = GOOD,
+            armorClass = 15,
+            hitPoints = 10
+        )
+        
+        assertThat(character.name).isEqualTo("Drew")
+        assertThat(character.alignment.name).isEqualTo("GOOD")
+        assertThat(character.armorClass).isEqualTo(15)
+        assertThat(character.hitPoints).isEqualTo(10)
     }
 
     @Test
     fun armorClassShouldReturn10ByDefault() {
         val character = Character("Drew", NEUTRAL);
 
-        assertEquals(10, character.armorClass)
+        assertThat(character.armorClass).isEqualTo(10)
     }
 
     @Test
     fun hitPointsShouldReturn5ByDefault() {
         val character = Character("Drew", EVIL);
 
-        assertEquals(5, character.hitPoints)
+        assertThat(character.hitPoints).isEqualTo(5)
     }
 }
