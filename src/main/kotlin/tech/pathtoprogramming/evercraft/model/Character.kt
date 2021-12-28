@@ -1,6 +1,7 @@
 package tech.pathtoprogramming.evercraft.model
 
 import tech.pathtoprogramming.evercraft.Dice
+import org.slf4j.LoggerFactory
 
 data class Character(
     val name: String = "",
@@ -9,8 +10,15 @@ data class Character(
     val hitPoints: Int = 5,
     val dice: Dice = Dice()
 ) {
+
+    private val log = LoggerFactory.getLogger(Character::class.java)
+
     fun attack(target: Character): Boolean {
-        return dice.roll() >= target.armorClass
+        val roll = dice.roll()
+        val isHit = roll >= target.armorClass
+        log.info("Attacking opponent with AC of ${target.armorClass}." +
+                " Result: $roll. isHit: $isHit")
+        return isHit
     }
 }
 
