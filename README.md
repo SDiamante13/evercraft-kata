@@ -20,7 +20,7 @@ This iteration covers core functionality for leveling, combat, and character att
 
 > As a character I want to have a name so that I can be distinguished from other characters
 
-- can get and set Name
+- can get name
 
 #### Feature: Alignment
 
