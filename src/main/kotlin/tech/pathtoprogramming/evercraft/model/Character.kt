@@ -2,6 +2,9 @@ package tech.pathtoprogramming.evercraft.model
 
 import tech.pathtoprogramming.evercraft.Dice
 import org.slf4j.LoggerFactory
+import java.lang.IllegalArgumentException
+
+val defaultAbility = Ability(score = 10)
 
 data class Character(
     val name: String = "",
@@ -9,6 +12,14 @@ data class Character(
     val armorClass: Int = 10,
     var hitPoints: Int = 5,
     var status: Status = Status.ALIVE,
+    val abilities: MutableMap<String, Ability> = mutableMapOf(
+        "Strength" to defaultAbility,
+        "Dexterity" to defaultAbility,
+        "Constitution" to defaultAbility,
+        "Wisdom" to defaultAbility,
+        "Intelligence" to defaultAbility,
+        "Charisma" to defaultAbility
+    ),
     val dice: Dice = Dice()
 ) {
 
@@ -32,4 +43,25 @@ enum class Alignment {
 
 enum class Status {
     ALIVE, DEAD
+}
+
+data class Ability(val score: Int) {
+    fun deriveModifier(): Int {
+        return when (score) {
+            1 -> -5
+            2,3 -> -4
+            4,5 -> -3
+            6,7 -> -2
+            8,9 -> -1
+            10,11 -> 0
+            12,13 -> 1
+            14,15 -> 2
+            16,17 -> 3
+            18,19 -> 4
+            20 -> 5
+            else -> {
+                throw IllegalArgumentException("Score must be between 1 and 20")
+            }
+        }
+    }
 }
