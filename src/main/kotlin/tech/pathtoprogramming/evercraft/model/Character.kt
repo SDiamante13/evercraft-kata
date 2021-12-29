@@ -1,24 +1,24 @@
 package tech.pathtoprogramming.evercraft.model
 
-import tech.pathtoprogramming.evercraft.Dice
 import org.slf4j.LoggerFactory
+import tech.pathtoprogramming.evercraft.*
 import java.lang.IllegalArgumentException
 
 val defaultAbility = Ability(score = 10)
 
 data class Character(
-    val name: String = "",
+    val name: String,
     val alignment: Alignment = Alignment.NEUTRAL,
     val armorClass: Int = 10,
     var hitPoints: Int = 5,
     var status: Status = Status.ALIVE,
     val abilities: MutableMap<String, Ability> = mutableMapOf(
-        "Strength" to defaultAbility,
-        "Dexterity" to defaultAbility,
-        "Constitution" to defaultAbility,
-        "Wisdom" to defaultAbility,
-        "Intelligence" to defaultAbility,
-        "Charisma" to defaultAbility
+        STRENGTH to defaultAbility,
+        DEXTERITY to defaultAbility,
+        CONSTITUTION to defaultAbility,
+        WISDOM to defaultAbility,
+        INTELLIGENCE to defaultAbility,
+        CHARISMA to defaultAbility
     ),
     val dice: Dice = Dice()
 ) {
@@ -28,12 +28,20 @@ data class Character(
     fun attack(target: Character) {
         val roll = dice.roll()
         val isCriticalHit = roll == 20
-        val isHit = roll >= target.armorClass
-        val damage = if (isCriticalHit) 2 else 1
-
-        log.info("Attacking opponent with AC of ${target.armorClass}. Roll: $roll. isHit: $isHit.")
+        var strengthMod = abilities[STRENGTH]?.deriveModifier() ?: 0
+        if (isCriticalHit) strengthMod *= 2
+        val isHit = roll + strengthMod >= target.armorClass
+        val damage = calculateDamage(isCriticalHit, strengthMod)
+        log.info("Attacking opponent with AC of ${target.armorClass}." +
+                " Roll: $roll. isHit: $isHit. isCriticalHit: $isCriticalHit strength mod: $strengthMod")
         if (isHit) target.hitPoints -= damage
         if (target.hitPoints < 1) target.status = Status.DEAD
+    }
+
+    private fun calculateDamage(isCriticalHit: Boolean, strengthMod: Int): Int {
+        var damage = if (isCriticalHit) 2 + strengthMod else 1 + strengthMod
+        if (damage < 1) damage = 1
+        return damage
     }
 }
 

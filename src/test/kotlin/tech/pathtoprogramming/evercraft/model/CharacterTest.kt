@@ -8,8 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
-import tech.pathtoprogramming.evercraft.Dice
-import tech.pathtoprogramming.evercraft.model.Alignment.*
+import tech.pathtoprogramming.evercraft.*
 import java.lang.IllegalArgumentException
 
 
@@ -26,58 +25,59 @@ class CharacterTest {
     fun characterReturnsCharacterProperties() {
         val character = Character(
             name = "Lancelot",
-            alignment = GOOD,
+            alignment = Alignment.GOOD,
             armorClass = 15,
             hitPoints = 10
         )
 
         assertThat(character.name).isEqualTo("Lancelot")
-        assertThat(character.alignment.name).isEqualTo("GOOD")
+        assertThat(character.alignment.name).isEqualTo(GOOD)
         assertThat(character.armorClass).isEqualTo(15)
         assertThat(character.hitPoints).isEqualTo(10)
-        assertThat(character.status.name).isEqualTo("ALIVE")
-        assertThat(character.abilities["Strength"]?.score).isEqualTo(10)
-        assertThat(character.abilities["Strength"]?.deriveModifier()).isEqualTo(0)
-        assertThat(character.abilities["Dexterity"]?.score).isEqualTo(10)
-        assertThat(character.abilities["Dexterity"]?.deriveModifier()).isEqualTo(0)
-        assertThat(character.abilities["Constitution"]?.score).isEqualTo(10)
-        assertThat(character.abilities["Constitution"]?.deriveModifier()).isEqualTo(0)
-        assertThat(character.abilities["Wisdom"]?.score).isEqualTo(10)
-        assertThat(character.abilities["Wisdom"]?.deriveModifier()).isEqualTo(0)
-        assertThat(character.abilities["Intelligence"]?.score).isEqualTo(10)
-        assertThat(character.abilities["Intelligence"]?.deriveModifier()).isEqualTo(0)
-        assertThat(character.abilities["Charisma"]?.score).isEqualTo(10)
-        assertThat(character.abilities["Charisma"]?.deriveModifier()).isEqualTo(0)
+        assertThat(character.status.name).isEqualTo(ALIVE)
+        assertThat(character.abilities[STRENGTH]?.score).isEqualTo(10)
+        assertThat(character.abilities[STRENGTH]?.deriveModifier()).isEqualTo(0)
+        assertThat(character.abilities[DEXTERITY]?.score).isEqualTo(10)
+        assertThat(character.abilities[DEXTERITY]?.deriveModifier()).isEqualTo(0)
+        assertThat(character.abilities[CONSTITUTION]?.score).isEqualTo(10)
+        assertThat(character.abilities[CONSTITUTION]?.deriveModifier()).isEqualTo(0)
+        assertThat(character.abilities[WISDOM]?.score).isEqualTo(10)
+        assertThat(character.abilities[WISDOM]?.deriveModifier()).isEqualTo(0)
+        assertThat(character.abilities[INTELLIGENCE]?.score).isEqualTo(10)
+        assertThat(character.abilities[INTELLIGENCE]?.deriveModifier()).isEqualTo(0)
+        assertThat(character.abilities[CHARISMA]?.score).isEqualTo(10)
+        assertThat(character.abilities[CHARISMA]?.deriveModifier()).isEqualTo(0)
     }
 
     @Test
     fun armorClassShouldReturn10ByDefault() {
-        val character = Character(name = "Lancelot", alignment = NEUTRAL);
+        val character = Character(name = "Lancelot", alignment = Alignment.NEUTRAL);
 
         assertThat(character.armorClass).isEqualTo(10)
     }
 
     @Test
     fun hitPointsShouldReturn5ByDefault() {
-        val character = Character(name = "Lancelot", alignment = EVIL);
+        val character = Character(name = "Lancelot", alignment = Alignment.EVIL);
 
         assertThat(character.hitPoints).isEqualTo(5)
     }
 
     @Test
     fun attackDealsDamageToTargetWhenRollIsEqualOrGreaterThanOpponentArmorClass() {
-        val character = Character(name = "Lancelot", alignment = EVIL, dice = mockDice)
+        val character = Character(name = "Lancelot", dice = mockDice)
+        character.abilities[STRENGTH] = Ability(score = 20)
         val monster = Character(name = "Goblin", hitPoints = 10, armorClass = 12)
         every { mockDice.roll() } returns 15
 
         character.attack(monster)
 
-        assertThat(monster.hitPoints).isEqualTo(9)
+        assertThat(monster.hitPoints).isEqualTo(4)
     }
 
     @Test
     fun attackDoesNotDealDamageWhenRollIsLessThanOpponentArmorClass() {
-        val character = Character(name = "Lancelot", alignment = EVIL, dice = mockDice)
+        val character = Character(name = "Lancelot", dice = mockDice)
         val monster = Character(name = "Goblin", hitPoints = 10, armorClass = 12)
         every { mockDice.roll() } returns 11
 
@@ -88,26 +88,26 @@ class CharacterTest {
 
     @Test
     fun attackDealsCriticalDamageToTargetWhenRollIsANaturalTwenty() {
-        val character = Character(name = "Lancelot", alignment = EVIL, dice = mockDice)
+        val character = Character(name = "Lancelot", dice = mockDice)
         val monster = Character(name = "Goblin", hitPoints = 10, armorClass = 12)
         every { mockDice.roll() } returns 20
 
         character.attack(monster)
 
         assertThat(monster.hitPoints).isEqualTo(8)
-        assertThat(monster.status.name).isEqualTo("ALIVE")
+        assertThat(monster.status.name).isEqualTo(ALIVE)
     }
 
     @Test
     fun attackKillsTargetWhenTheHitPointsAreLessThanOrEqualToZero() {
-        val character = Character(name = "Lancelot", alignment = EVIL, dice = mockDice)
+        val character = Character(name = "Lancelot", dice = mockDice)
         val monster = Character(name = "Goblin", hitPoints = 1, armorClass = 12)
         every { mockDice.roll() } returns 14
 
         character.attack(monster)
 
         assertThat(monster.hitPoints).isEqualTo(0)
-        assertThat(monster.status.name).isEqualTo("DEAD")
+        assertThat(monster.status.name).isEqualTo(DEAD)
     }
 
     @ParameterizedTest(name = "Ability score of {0} yields modifier of {1}")
@@ -136,19 +136,79 @@ class CharacterTest {
     fun abilityScoresAndModifiers(score: Int, expectedModifier: Int) {
         val character = Character(name = "Lancelot")
 
-        character.abilities["Constitution"] = Ability(score = score)
+        character.abilities[CONSTITUTION] = Ability(score = score)
 
-        assertThat(character.abilities["Constitution"]?.deriveModifier()).isEqualTo(expectedModifier)
+        assertThat(character.abilities[CONSTITUTION]?.deriveModifier()).isEqualTo(expectedModifier)
     }
 
     @Test
     fun abilityScoreOutOfRangeWillThrowIllegalArgumentExceptionWhenDeriveModifierIsCalled() {
         val character = Character(name = "Lancelot")
 
-        character.abilities["Wisdom"] = Ability(score = 99)
+        character.abilities[WISDOM] = Ability(score = 99)
 
         assertThatExceptionOfType(IllegalArgumentException::class.java)
-            .isThrownBy { character.abilities["Wisdom"]?.deriveModifier() }
+            .isThrownBy { character.abilities[WISDOM]?.deriveModifier() }
             .withMessage("Score must be between 1 and 20")
+    }
+
+    @Test
+    fun strengthModifierIncreasesAttackRoll() {
+        val character = Character(name = "Lancelot", dice = mockDice)
+        character.abilities[STRENGTH] = Ability(score = 16)
+        val monster = Character(name = "Goblin", hitPoints = 10, armorClass = 12)
+        every { mockDice.roll() } returns 11
+
+        character.attack(monster)
+
+        assertThat(monster.hitPoints).isEqualTo(6)
+    }
+
+    @Test
+    fun strengthModifierDecreasesAttackRoll() {
+        val character = Character(name = "Lancelot", dice = mockDice)
+        character.abilities[STRENGTH] = Ability(score = 5)
+        val monster = Character(name = "Goblin", hitPoints = 10, armorClass = 12)
+        every { mockDice.roll() } returns 13
+
+        character.attack(monster)
+
+        assertThat(monster.hitPoints).isEqualTo(10)
+    }
+
+    @Test
+    fun strengthModifierIsDoubledOnCriticalHits() {
+        val character = Character(name = "Lancelot", dice = mockDice)
+        character.abilities[STRENGTH] = Ability(score = 18)
+        val monster = Character(name = "Goblin", hitPoints = 19, armorClass = 12)
+        every { mockDice.roll() } returns 20
+
+        character.attack(monster)
+
+        assertThat(monster.hitPoints).isEqualTo(9)
+    }
+
+    @Test
+    fun minimumDamageIsAlwaysOne() {
+        val character = Character(name = "Lancelot", dice = mockDice)
+        character.abilities[STRENGTH] = Ability(score = 4)
+        val monster = Character(name = "Goblin", hitPoints = 10, armorClass = 12)
+        every { mockDice.roll() } returns 15
+
+        character.attack(monster)
+
+        assertThat(monster.hitPoints).isEqualTo(9)
+    }
+
+    @Test
+    fun minimumDamageIsAlwaysOneEvenForCriticalHits() {
+        val character = Character(name = "Lancelot", dice = mockDice)
+        character.abilities[STRENGTH] = Ability(score = 4)
+        val monster = Character(name = "Goblin", hitPoints = 10, armorClass = 6)
+        every { mockDice.roll() } returns 20
+
+        character.attack(monster)
+
+        assertThat(monster.hitPoints).isEqualTo(9)
     }
 }
