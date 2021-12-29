@@ -32,8 +32,8 @@ class CharacterTest {
 
         assertThat(character.name).isEqualTo("Lancelot")
         assertThat(character.alignment.name).isEqualTo(GOOD)
-        assertThat(character.armorClass).isEqualTo(15)
-        assertThat(character.hitPoints).isEqualTo(10)
+        assertThat(character.getArmorClass()).isEqualTo(15)
+        assertThat(character.getHitPoints()).isEqualTo(10)
         assertThat(character.status.name).isEqualTo(ALIVE)
         assertThat(character.abilities[STRENGTH]?.score).isEqualTo(10)
         assertThat(character.abilities[STRENGTH]?.deriveModifier()).isEqualTo(0)
@@ -53,14 +53,14 @@ class CharacterTest {
     fun armorClassShouldReturn10ByDefault() {
         val character = Character(name = "Lancelot", alignment = Alignment.NEUTRAL);
 
-        assertThat(character.armorClass).isEqualTo(10)
+        assertThat(character.getArmorClass()).isEqualTo(10)
     }
 
     @Test
     fun hitPointsShouldReturn5ByDefault() {
         val character = Character(name = "Lancelot", alignment = Alignment.EVIL);
 
-        assertThat(character.hitPoints).isEqualTo(5)
+        assertThat(character.getHitPoints()).isEqualTo(5)
     }
 
     @Test
@@ -72,7 +72,7 @@ class CharacterTest {
 
         character.attack(monster)
 
-        assertThat(monster.hitPoints).isEqualTo(4)
+        assertThat(monster.getHitPoints()).isEqualTo(4)
     }
 
     @Test
@@ -83,7 +83,7 @@ class CharacterTest {
 
         character.attack(monster)
 
-        assertThat(monster.hitPoints).isEqualTo(10)
+        assertThat(monster.getHitPoints()).isEqualTo(10)
     }
 
     @Test
@@ -94,7 +94,7 @@ class CharacterTest {
 
         character.attack(monster)
 
-        assertThat(monster.hitPoints).isEqualTo(8)
+        assertThat(monster.getHitPoints()).isEqualTo(8)
         assertThat(monster.status.name).isEqualTo(ALIVE)
     }
 
@@ -106,7 +106,7 @@ class CharacterTest {
 
         character.attack(monster)
 
-        assertThat(monster.hitPoints).isEqualTo(0)
+        assertThat(monster.getHitPoints()).isEqualTo(0)
         assertThat(monster.status.name).isEqualTo(DEAD)
     }
 
@@ -161,7 +161,7 @@ class CharacterTest {
 
         character.attack(monster)
 
-        assertThat(monster.hitPoints).isEqualTo(6)
+        assertThat(monster.getHitPoints()).isEqualTo(6)
     }
 
     @Test
@@ -173,7 +173,7 @@ class CharacterTest {
 
         character.attack(monster)
 
-        assertThat(monster.hitPoints).isEqualTo(10)
+        assertThat(monster.getHitPoints()).isEqualTo(10)
     }
 
     @Test
@@ -185,7 +185,7 @@ class CharacterTest {
 
         character.attack(monster)
 
-        assertThat(monster.hitPoints).isEqualTo(9)
+        assertThat(monster.getHitPoints()).isEqualTo(9)
     }
 
     @Test
@@ -197,7 +197,7 @@ class CharacterTest {
 
         character.attack(monster)
 
-        assertThat(monster.hitPoints).isEqualTo(9)
+        assertThat(monster.getHitPoints()).isEqualTo(9)
     }
 
     @Test
@@ -209,6 +209,36 @@ class CharacterTest {
 
         character.attack(monster)
 
-        assertThat(monster.hitPoints).isEqualTo(9)
+        assertThat(monster.getHitPoints()).isEqualTo(9)
+    }
+
+    @Test
+    fun addDexterityModifierToArmorClass() {
+        val character = Character(name = "Lancelot", armorClass = 13)
+        character.abilities[DEXTERITY] = Ability(score = 12)
+
+        val actualArmorClass = character.getArmorClass()
+
+        assertThat(actualArmorClass).isEqualTo(14)
+    }
+
+    @Test
+    fun addConstitutionModifierToHitPoints() {
+        val character = Character(name = "Lancelot", hitPoints = 15)
+        character.abilities[CONSTITUTION] = Ability(score = 16)
+
+        val actualHitPoints = character.getHitPoints()
+
+        assertThat(actualHitPoints).isEqualTo(18)
+    }
+
+    @Test
+    fun getHitPointsWillReturnAtLeast1HitPointIfAlive() {
+        val character = Character(name = "Lancelot", hitPoints = 4)
+        character.abilities[CONSTITUTION] = Ability(score = 1)
+
+        val actualHitPoints = character.getHitPoints()
+
+        assertThat(actualHitPoints).isEqualTo(1)
     }
 }

@@ -9,8 +9,8 @@ val defaultAbility = Ability(score = 10)
 data class Character(
     val name: String,
     val alignment: Alignment = Alignment.NEUTRAL,
-    val armorClass: Int = 10,
-    var hitPoints: Int = 5,
+    private val armorClass: Int = 10,
+    private var hitPoints: Int = 5,
     var status: Status = Status.ALIVE,
     val abilities: MutableMap<String, Ability> = mutableMapOf(
         STRENGTH to defaultAbility,
@@ -25,6 +25,21 @@ data class Character(
 
     private val log = LoggerFactory.getLogger(Character::class.java)
 
+    fun getArmorClass(): Int {
+        val dexterityMod = this.abilities[DEXTERITY]?.deriveModifier() ?: 0
+        return this.armorClass + dexterityMod
+    }
+
+    fun setHitPoints(newHp: Int) {
+        this.hitPoints = newHp
+    }
+
+    fun getHitPoints(): Int {
+        val constitutionMod = this.abilities[CONSTITUTION]?.deriveModifier() ?: 0
+        val hp = this.hitPoints + constitutionMod
+        return if (hp < 1 && constitutionMod < 0) 1 else hp
+    }
+
     fun attack(target: Character) {
         val roll = dice.roll()
         val isCriticalHit = roll == 20
@@ -34,7 +49,7 @@ data class Character(
         val damage = calculateDamage(isCriticalHit, strengthMod)
         log.info("Attacking opponent with AC of ${target.armorClass}." +
                 " Roll: $roll. isHit: $isHit. isCriticalHit: $isCriticalHit strength mod: $strengthMod")
-        if (isHit) target.hitPoints -= damage
+        if (isHit) target.setHitPoints(target.getHitPoints() - damage)
         if (target.hitPoints < 1) target.status = Status.DEAD
     }
 
