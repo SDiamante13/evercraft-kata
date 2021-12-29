@@ -30,6 +30,7 @@ class CharacterTest {
         assertThat(character.alignment.name).isEqualTo("GOOD")
         assertThat(character.armorClass).isEqualTo(15)
         assertThat(character.hitPoints).isEqualTo(10)
+        assertThat(character.status.name).isEqualTo("ALIVE")
     }
 
     @Test
@@ -47,24 +48,48 @@ class CharacterTest {
     }
 
     @Test
-    fun attackReturnsTrueWhenRollIsEqualOrGreaterThanOpponentArmorClass() {
+    fun attackDealsDamageToTargetWhenRollIsEqualOrGreaterThanOpponentArmorClass() {
         val character = Character(name = "Drew", alignment = EVIL, dice = mockDice)
-        val monster = Character(name = "Goblin", armorClass = 12)
+        val monster = Character(name = "Goblin", hitPoints = 10, armorClass = 12)
         every { mockDice.roll() } returns 15
 
-        val isHit: Boolean = character.attack(monster)
+        character.attack(monster)
 
-        assertThat(isHit).isTrue
+        assertThat(monster.hitPoints).isEqualTo(9)
     }
 
     @Test
-    fun attackReturnsFalseWhenRollIsLessThanOpponentArmorClass() {
+    fun attackDoesNotDealDamageWhenRollIsLessThanOpponentArmorClass() {
         val character = Character(name = "Drew", alignment = EVIL, dice = mockDice)
-        val monster = Character(name = "Goblin", armorClass = 12)
+        val monster = Character(name = "Goblin", hitPoints = 10, armorClass = 12)
         every { mockDice.roll() } returns 11
 
-        val isHit: Boolean = character.attack(monster)
+        character.attack(monster)
 
-        assertThat(isHit).isFalse
+        assertThat(monster.hitPoints).isEqualTo(10)
+    }
+
+    @Test
+    fun attackDealsCriticalDamageToTargetWhenRollIsANaturalTwenty() {
+        val character = Character(name = "Drew", alignment = EVIL, dice = mockDice)
+        val monster = Character(name = "Goblin", hitPoints = 10, armorClass = 12)
+        every { mockDice.roll() } returns 20
+
+        character.attack(monster)
+
+        assertThat(monster.hitPoints).isEqualTo(8)
+        assertThat(monster.status.name).isEqualTo("ALIVE")
+    }
+
+    @Test
+    fun attackKillsTargetWhenTheHitPointsAreLessThanOrEqualToZero() {
+        val character = Character(name = "Drew", alignment = EVIL, dice = mockDice)
+        val monster = Character(name = "Goblin", hitPoints = 1, armorClass = 12)
+        every { mockDice.roll() } returns 14
+
+        character.attack(monster)
+
+        assertThat(monster.hitPoints).isEqualTo(0)
+        assertThat(monster.status.name).isEqualTo("DEAD")
     }
 }

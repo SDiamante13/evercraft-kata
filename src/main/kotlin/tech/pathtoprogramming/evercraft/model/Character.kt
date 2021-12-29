@@ -7,21 +7,29 @@ data class Character(
     val name: String = "",
     val alignment: Alignment = Alignment.NEUTRAL,
     val armorClass: Int = 10,
-    val hitPoints: Int = 5,
+    var hitPoints: Int = 5,
+    var status: Status = Status.ALIVE,
     val dice: Dice = Dice()
 ) {
 
     private val log = LoggerFactory.getLogger(Character::class.java)
 
-    fun attack(target: Character): Boolean {
+    fun attack(target: Character) {
         val roll = dice.roll()
+        val isCriticalHit = roll == 20
         val isHit = roll >= target.armorClass
-        log.info("Attacking opponent with AC of ${target.armorClass}." +
-                " Result: $roll. isHit: $isHit")
-        return isHit
+        val damage = if (isCriticalHit) 2 else 1
+
+        log.info("Attacking opponent with AC of ${target.armorClass}. Roll: $roll. isHit: $isHit.")
+        if (isHit) target.hitPoints -= damage
+        if (target.hitPoints < 1) target.status = Status.DEAD
     }
 }
 
 enum class Alignment {
     GOOD, NEUTRAL, EVIL
+}
+
+enum class Status {
+    ALIVE, DEAD
 }
