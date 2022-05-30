@@ -1,7 +1,6 @@
 package tech.pathtoprogramming.evercraft.model;
 
 import org.junit.jupiter.api.Test;
-import tech.pathtoprogramming.evercraft.Character;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

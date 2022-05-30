@@ -1,6 +1,4 @@
-package tech.pathtoprogramming.evercraft;
-
-import tech.pathtoprogramming.evercraft.model.Alignment;
+package tech.pathtoprogramming.evercraft.model;
 
 public class Character {
 
