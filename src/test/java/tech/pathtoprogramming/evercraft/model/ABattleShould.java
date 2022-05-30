@@ -7,14 +7,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-//    As a combatant I want to be able to attack other combatants so that I can survive to fight another day
-//
-//    roll a 20 sided die (don't code the die)
-//            roll must meet or beat opponents armor class to hit
-//            a natural roll of 20 always hits
-
-// Battle - 20 sided die
-// battle.attack(combatant, enemyCombatant) changes state - returns void
 class ABattleShould {
     private static final int MISSED_ROLL = 3;
     private static final int HIT_ROLL = 10;
