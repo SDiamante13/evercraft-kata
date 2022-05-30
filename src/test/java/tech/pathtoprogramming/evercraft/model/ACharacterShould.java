@@ -33,4 +33,31 @@ class ACharacterShould {
 
         assertThat(tim.hitPoints()).isEqualTo(5);
     }
+
+    @Test
+    void reduceItsOwnHitPointsByOne() {
+        Character tim = new Character(null, null, 10, 5);
+
+        tim.takeDamage();
+
+        assertThat(tim.hitPoints()).isEqualTo(4);
+    }
+
+    @Test
+    void determineIfTheRollIsAHit() {
+        Character tim = new Character(null, null, 10, 5);
+
+        boolean isHit = tim.isHit(10);
+
+        assertThat(isHit).isTrue();
+    }
+
+    @Test
+    void determineIfTheRollIsAMiss() {
+        Character tim = new Character(null, null, 10, 5);
+
+        boolean isHit = tim.isHit(1);
+
+        assertThat(isHit).isFalse();
+    }
 }
