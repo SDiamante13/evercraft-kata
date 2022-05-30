@@ -2,13 +2,16 @@ package tech.pathtoprogramming.evercraft.model;
 
 public class Character {
 
+    public static final int DEFAULT_ARMOR_CLASS = 10;
+    public static final int DEFAULT_HIT_POINTS = 5;
+
     private final String name;
     private final Alignment alignment;
     private final int armorClass;
     private int hitPoints;
 
     public Character(String name, Alignment alignment) {
-        this(name, alignment, 10, 5);
+        this(name, alignment, DEFAULT_ARMOR_CLASS, DEFAULT_HIT_POINTS);
     }
 
     public Character(String name, Alignment alignment, int armorClass, int hitPoints) {
@@ -41,5 +44,9 @@ public class Character {
 
     public boolean isHit(int roll) {
         return roll >= armorClass;
+    }
+
+    public boolean isDead() {
+        return hitPoints <= 0;
     }
 }

@@ -60,4 +60,13 @@ class ACharacterShould {
 
         assertThat(isHit).isFalse();
     }
+
+    @Test
+    void beDeadWhenItsHitPointsAreZeroOrBelow() {
+        Character tim = new Character(null, null, 10, 1);
+
+        tim.takeDamage();
+
+        assertThat(tim.isDead()).isTrue();
+    }
 }
