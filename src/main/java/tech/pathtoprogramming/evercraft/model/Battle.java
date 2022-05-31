@@ -2,6 +2,8 @@ package tech.pathtoprogramming.evercraft.model;
 
 import tech.pathtoprogramming.evercraft.TwentySidedDie;
 
+import static java.lang.Math.max;
+
 public class Battle {
 
     public static final int CRITICAL_HIT = 20;
@@ -16,7 +18,8 @@ public class Battle {
         int roll = twentySidedDie.roll();
         int modifier = calculateModifier(combatant, roll);
         if (enemyCombatant.isHit(roll + modifier)) {
-            enemyCombatant.takeDamage(1 + modifier);
+            int damageDealt = max(1 + modifier, 1);
+            enemyCombatant.takeDamage(damageDealt);
         }
     }
 
