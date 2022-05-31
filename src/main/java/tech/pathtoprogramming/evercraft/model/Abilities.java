@@ -60,4 +60,8 @@ public class Abilities {
     public void setDexterityAbilityWith(int score) {
         this.abilityMap.replace(DEXTERITY, new AbilityScore(score));
     }
+
+    public void setConstitutionAbilityWith(int score) {
+        this.abilityMap.replace(CONSTITUTION, new AbilityScore(score));
+    }
 }

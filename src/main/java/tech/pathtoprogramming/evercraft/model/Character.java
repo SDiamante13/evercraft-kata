@@ -1,5 +1,7 @@
 package tech.pathtoprogramming.evercraft.model;
 
+import static java.lang.Math.max;
+
 public class Character {
 
     public static final int DEFAULT_ARMOR_CLASS = 10;

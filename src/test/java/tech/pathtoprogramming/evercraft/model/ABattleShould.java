@@ -116,4 +116,17 @@ class ABattleShould {
 
         assertThat(enemyCombatant.hitPoints()).isEqualTo(ENEMY_HIT_POINTS);
     }
+
+    @Test
+    void applyTheConstitutionModifierToHitPoints() {
+        when(twentySidedDie.roll())
+                .thenReturn(HIT_ROLL);
+        Character combatant = new Character("Combatant", Alignment.GOOD);
+        Character enemyCombatant = new Character("Enemy", Alignment.EVIL, 10, ENEMY_HIT_POINTS);
+        enemyCombatant.abilities().setConstitutionAbilityWith(8);
+
+        battle.recordAttack(combatant, enemyCombatant);
+
+        assertThat(enemyCombatant.hitPoints()).isEqualTo(10 - 1 - 1);
+    }
 }
