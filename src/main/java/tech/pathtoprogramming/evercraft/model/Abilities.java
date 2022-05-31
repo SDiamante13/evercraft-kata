@@ -1,46 +1,44 @@
 package tech.pathtoprogramming.evercraft.model;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 import static tech.pathtoprogramming.evercraft.model.Ability.*;
-import static tech.pathtoprogramming.evercraft.model.Ability.DEXTERITY;
-import static tech.pathtoprogramming.evercraft.model.Ability.STRENGTH;
 
 public class Abilities {
-    private Map<Ability, Integer> abilityMap; // TODO: Refactor Integer to AbilityScore so you can have score and modifer
+    private Map<Ability, AbilityScore> abilityMap;
 
     public Abilities() {
-        this.abilityMap = new HashMap<>();
-        this.abilityMap.put(STRENGTH, 10);
-        this.abilityMap.put(DEXTERITY, 10);
-        this.abilityMap.put(CONSTITUTION, 10);
-        this.abilityMap.put(WISDOM, 10);
-        this.abilityMap.put(INTELLIGENCE, 10);
-        this.abilityMap.put(CHARISMA, 10);
+        this.abilityMap = new EnumMap<>(Ability.class);
+        this.abilityMap.put(STRENGTH, new AbilityScore(10));
+        this.abilityMap.put(DEXTERITY, new AbilityScore(10));
+        this.abilityMap.put(CONSTITUTION, new AbilityScore(10));
+        this.abilityMap.put(WISDOM, new AbilityScore(10));
+        this.abilityMap.put(INTELLIGENCE, new AbilityScore(10));
+        this.abilityMap.put(CHARISMA, new AbilityScore(10));
     }
 
-    public int strength() {
+    public AbilityScore strength() {
         return abilityMap.get(STRENGTH);
     }
 
-    public int dexterity() {
+    public AbilityScore dexterity() {
         return abilityMap.get(DEXTERITY);
     }
 
-    public int constitution() {
+    public AbilityScore constitution() {
         return abilityMap.get(CONSTITUTION);
     }
 
-    public int wisdom() {
+    public AbilityScore wisdom() {
         return abilityMap.get(WISDOM);
     }
 
-    public int intelligence() {
+    public AbilityScore intelligence() {
         return abilityMap.get(INTELLIGENCE);
     }
 
-    public int charisma() {
+    public AbilityScore charisma() {
         return abilityMap.get(CHARISMA);
     }
 }
