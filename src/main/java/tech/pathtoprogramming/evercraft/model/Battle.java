@@ -22,7 +22,7 @@ public class Battle {
 
     private void recordDamageForSuccessfulAttack(Character enemyCombatant, int roll, int modifier) {
         if (enemyCombatant.isHit(roll + modifier)) {
-            enemyCombatant.takeDamage(1);
+            enemyCombatant.takeDamage(1 + modifier);
         }
     }
 

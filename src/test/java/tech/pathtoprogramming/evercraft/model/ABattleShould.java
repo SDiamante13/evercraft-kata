@@ -54,7 +54,6 @@ class ABattleShould {
     }
 
 //    Add Strength modifier to:
-//    attack roll and damage dealt
 //    double Strength modifier on critical hits
 //    minimum damage is always 1 (even on a critical hit)
     @Test
@@ -67,6 +66,19 @@ class ABattleShould {
 
         battle.recordAttack(combatant, enemyCombatant);
 
-        assertThat(enemyCombatant.hitPoints()).isEqualTo(ENEMY_HIT_POINTS - 1);
+        assertThat(enemyCombatant.hitPoints()).isEqualTo(ENEMY_HIT_POINTS - 1 - 1);
+    }
+
+    @Test
+    void addStrengthModifierToDamageDealt() {
+        when(twentySidedDie.roll())
+                .thenReturn(HIT_ROLL);
+        Character combatant = new Character("Combatant", Alignment.GOOD, 10, 5);
+        combatant.abilities().setStrengthAbilityWith(14);
+        Character enemyCombatant = new Character("Enemy", Alignment.EVIL, 10, ENEMY_HIT_POINTS);
+
+        battle.recordAttack(combatant, enemyCombatant);
+
+        assertThat(enemyCombatant.hitPoints()).isEqualTo(ENEMY_HIT_POINTS - 1 - 2);
     }
 }
