@@ -1,6 +1,5 @@
 package tech.pathtoprogramming.evercraft.model;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import tech.pathtoprogramming.evercraft.TwentySidedDie;
 
@@ -11,7 +10,7 @@ import static org.mockito.Mockito.when;
 class ABattleShould {
     private static final int MISSED_ROLL = 3;
     private static final int HIT_ROLL = 10;
-    public static final int ENEMY_HIT_POINTS = 5;
+    public static final int ENEMY_HIT_POINTS = 10;
     private static final int CRITICAL_HIT_ROLL = 20;
 
     private final TwentySidedDie twentySidedDie = mock(TwentySidedDie.class);
@@ -26,7 +25,7 @@ class ABattleShould {
 
         battle.recordAttack(combatant, enemyCombatant);
 
-        assertThat(enemyCombatant.hitPoints()).isEqualTo(5);
+        assertThat(enemyCombatant.hitPoints()).isEqualTo(ENEMY_HIT_POINTS);
     }
 
     @Test
@@ -80,5 +79,18 @@ class ABattleShould {
         battle.recordAttack(combatant, enemyCombatant);
 
         assertThat(enemyCombatant.hitPoints()).isEqualTo(ENEMY_HIT_POINTS - 1 - 2);
+    }
+
+    @Test
+    void doubleTheStrengthModifierForACriticalHit() {
+        when(twentySidedDie.roll())
+                .thenReturn(CRITICAL_HIT_ROLL);
+        Character combatant = new Character("Combatant", Alignment.GOOD);
+        combatant.abilities().setStrengthAbilityWith(18);
+        Character enemyCombatant = new Character("Enemy", Alignment.EVIL, 10, 10);
+
+        battle.recordAttack(combatant, enemyCombatant);
+
+        assertThat(enemyCombatant.hitPoints()).isEqualTo(ENEMY_HIT_POINTS - 10);
     }
 }

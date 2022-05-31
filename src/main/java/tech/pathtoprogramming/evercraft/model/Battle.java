@@ -14,22 +14,22 @@ public class Battle {
 
     public void recordAttack(Character combatant, Character enemyCombatant) {
         int roll = twentySidedDie.roll();
-
-        recordDamageForSuccessfulAttack(enemyCombatant, roll, combatant.abilities().strength().modifier());
-
-        recordCriticalDamage(enemyCombatant, roll);
-    }
-
-    private void recordDamageForSuccessfulAttack(Character enemyCombatant, int roll, int modifier) {
+        int modifier = calculateModifier(combatant, roll);
         if (enemyCombatant.isHit(roll + modifier)) {
             enemyCombatant.takeDamage(1 + modifier);
         }
     }
 
-    private void recordCriticalDamage(Character enemyCombatant, int roll) {
-        if (roll == CRITICAL_HIT) {
-            enemyCombatant.takeDamage(1);
-        }
+    private int calculateModifier(Character combatant, int roll) {
+        final int originalModifier = combatant.abilities().strength().modifier();
+        final int CRITICAL_HIT_MULTIPLIER = 2;
+        final int CRITICAL_HIT_DAMAGE_BONUS = 1;
+        return isCriticalHit(roll) ?
+                originalModifier * CRITICAL_HIT_MULTIPLIER + CRITICAL_HIT_DAMAGE_BONUS :
+                originalModifier;
     }
 
+    private boolean isCriticalHit(int roll) {
+        return roll == CRITICAL_HIT;
+    }
 }
