@@ -103,4 +103,17 @@ class ABattleShould {
 
         assertThat(enemyCombatant.hitPoints()).isEqualTo(ENEMY_HIT_POINTS - 1);
     }
+
+    @Test
+    void applyTheDexterityModifierToTheArmorClass() {
+        when(twentySidedDie.roll())
+                .thenReturn(HIT_ROLL + 4);
+        Character combatant = new Character("Combatant", Alignment.GOOD);
+        Character enemyCombatant = new Character("Enemy", Alignment.EVIL, 10, ENEMY_HIT_POINTS);
+        enemyCombatant.abilities().setDexterityAbilityWith(20);
+
+        battle.recordAttack(combatant, enemyCombatant);
+
+        assertThat(enemyCombatant.hitPoints()).isEqualTo(ENEMY_HIT_POINTS);
+    }
 }

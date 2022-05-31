@@ -6,7 +6,12 @@ import java.util.Map;
 import static tech.pathtoprogramming.evercraft.model.Ability.*;
 
 public class Abilities {
-    private Map<Ability, AbilityScore> abilityMap;
+
+    public static final int CRITICAL_HIT = 20;
+    public static final int CRITICAL_HIT_MULTIPLIER = 2;
+    public static final int CRITICAL_HIT_DAMAGE_BONUS = 1;
+
+    private final Map<Ability, AbilityScore> abilityMap;
 
     public Abilities() {
         this.abilityMap = new EnumMap<>(Ability.class);
@@ -44,5 +49,15 @@ public class Abilities {
 
     public void setStrengthAbilityWith(int score) {
         this.abilityMap.replace(STRENGTH, new AbilityScore(score));
+    }
+
+    int calculateModifierFor(int roll) {
+        return roll == CRITICAL_HIT ?
+                strength().modifier() * CRITICAL_HIT_MULTIPLIER + CRITICAL_HIT_DAMAGE_BONUS :
+                strength().modifier();
+    }
+
+    public void setDexterityAbilityWith(int score) {
+        this.abilityMap.replace(DEXTERITY, new AbilityScore(score));
     }
 }

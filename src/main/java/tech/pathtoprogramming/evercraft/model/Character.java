@@ -49,10 +49,11 @@ public class Character {
     }
 
     public boolean isHit(int roll) {
-        return roll >= armorClass;
+        return roll >= armorClass + abilities.dexterity().modifier();
     }
 
     public boolean isDead() {
         return hitPoints <= 0;
     }
+
 }
