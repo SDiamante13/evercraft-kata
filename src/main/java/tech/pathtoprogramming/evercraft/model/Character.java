@@ -44,8 +44,8 @@ public class Character {
         return abilities;
     }
 
-    public void takeDamage() {
-        hitPoints--;
+    public void takeDamage(int amount) {
+        hitPoints -= amount;
     }
 
     public boolean isHit(int roll) {

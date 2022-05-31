@@ -22,13 +22,13 @@ public class Battle {
 
     private void recordDamageForSuccessfulAttack(Character enemyCombatant, int roll, int modifier) {
         if (enemyCombatant.isHit(roll + modifier)) {
-            enemyCombatant.takeDamage();
+            enemyCombatant.takeDamage(1);
         }
     }
 
     private void recordCriticalDamage(Character enemyCombatant, int roll) {
         if (roll == CRITICAL_HIT) {
-            enemyCombatant.takeDamage();
+            enemyCombatant.takeDamage(1);
         }
     }
 

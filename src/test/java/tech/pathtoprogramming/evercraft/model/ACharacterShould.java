@@ -38,7 +38,7 @@ class ACharacterShould {
     void reduceItsOwnHitPointsByOne() {
         Character tim = new Character(null, null, 10, 5);
 
-        tim.takeDamage();
+        tim.takeDamage(1);
 
         assertThat(tim.hitPoints()).isEqualTo(4);
     }
@@ -65,7 +65,7 @@ class ACharacterShould {
     void beDeadWhenItsHitPointsAreZeroOrBelow() {
         Character tim = new Character(null, null, 10, 1);
 
-        tim.takeDamage();
+        tim.takeDamage(1);
 
         assertThat(tim.isDead()).isTrue();
     }
