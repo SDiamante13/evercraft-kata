@@ -15,13 +15,13 @@ public class Battle {
     public void recordAttack(Character combatant, Character enemyCombatant) {
         int roll = twentySidedDie.roll();
 
-        recordDamageForSuccessfulAttack(enemyCombatant, roll);
+        recordDamageForSuccessfulAttack(enemyCombatant, roll, combatant.abilities().strength().modifier());
 
         recordCriticalDamage(enemyCombatant, roll);
     }
 
-    private void recordDamageForSuccessfulAttack(Character enemyCombatant, int roll) {
-        if (enemyCombatant.isHit(roll)) {
+    private void recordDamageForSuccessfulAttack(Character enemyCombatant, int roll, int modifier) {
+        if (enemyCombatant.isHit(roll + modifier)) {
             enemyCombatant.takeDamage();
         }
     }

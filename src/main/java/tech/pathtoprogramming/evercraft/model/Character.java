@@ -9,6 +9,7 @@ public class Character {
     private final Alignment alignment;
     private final int armorClass;
     private int hitPoints;
+    private final Abilities abilities;
 
     public Character(String name, Alignment alignment) {
         this(name, alignment, DEFAULT_ARMOR_CLASS, DEFAULT_HIT_POINTS);
@@ -19,6 +20,7 @@ public class Character {
         this.alignment = alignment;
         this.armorClass = armorClass;
         this.hitPoints = hitPoints;
+        this.abilities = new Abilities();
     }
 
 
@@ -36,6 +38,10 @@ public class Character {
 
     public int hitPoints() {
         return hitPoints;
+    }
+
+    public Abilities abilities() {
+        return abilities;
     }
 
     public void takeDamage() {

@@ -41,4 +41,8 @@ public class Abilities {
     public AbilityScore charisma() {
         return abilityMap.get(CHARISMA);
     }
+
+    public void setStrengthAbilityWith(int score) {
+        this.abilityMap.replace(STRENGTH, new AbilityScore(score));
+    }
 }

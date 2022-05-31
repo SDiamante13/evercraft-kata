@@ -1,5 +1,6 @@
 package tech.pathtoprogramming.evercraft.model;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import tech.pathtoprogramming.evercraft.TwentySidedDie;
 
@@ -50,5 +51,22 @@ class ABattleShould {
         battle.recordAttack(combatant, enemyCombatant);
 
         assertThat(enemyCombatant.hitPoints()).isEqualTo(ENEMY_HIT_POINTS - 2);
+    }
+
+//    Add Strength modifier to:
+//    attack roll and damage dealt
+//    double Strength modifier on critical hits
+//    minimum damage is always 1 (even on a critical hit)
+    @Test
+    void addStrengthModifierToAttackRoll() {
+        when(twentySidedDie.roll())
+                .thenReturn(HIT_ROLL);
+        Character combatant = new Character("Combatant", Alignment.GOOD, 10, 5);
+        combatant.abilities().setStrengthAbilityWith(12);
+        Character enemyCombatant = new Character("Enemy", Alignment.EVIL, 11, ENEMY_HIT_POINTS);
+
+        battle.recordAttack(combatant, enemyCombatant);
+
+        assertThat(enemyCombatant.hitPoints()).isEqualTo(ENEMY_HIT_POINTS - 1);
     }
 }
