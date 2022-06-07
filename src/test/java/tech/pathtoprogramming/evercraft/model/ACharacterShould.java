@@ -1,6 +1,8 @@
 package tech.pathtoprogramming.evercraft.model;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -108,5 +110,26 @@ class ACharacterShould {
         tim.addExperience(8000);
 
         assertThat(tim.level()).isEqualTo(9);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {
+            "1000,8",
+            "2000,13",
+            "3000,18",
+            "4000,23",
+            "5000,28",
+            "6000,33",
+            "7000,38",
+            "8000,43",
+            "9000,48",
+    })
+    void haveTheirHitPointsIncreasedBy5PlusConModifierPerLevel(int experiencePoints, int expectedHitPoints) {
+        Character tim = new Character(null, null, 10, 1);
+        tim.abilities().setConstitutionAbilityWith(15);
+
+        tim.addExperience(experiencePoints);
+
+        assertThat(tim.hitPoints()).isEqualTo(expectedHitPoints);
     }
 }
