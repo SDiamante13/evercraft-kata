@@ -18,6 +18,7 @@ public class Battle {
         if (enemyCombatant.isHit(roll + modifier)) {
             int damageDealt = max(1 + modifier, 1);
             enemyCombatant.takeDamage(damageDealt);
+            combatant.addExperience(10);
         }
     }
 }

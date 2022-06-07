@@ -10,6 +10,7 @@ public class Character {
     private final int armorClass;
     private int hitPoints;
     private final Abilities abilities;
+    private int experiencePoints;
 
     public Character(String name, Alignment alignment) {
         this(name, alignment, DEFAULT_ARMOR_CLASS, DEFAULT_HIT_POINTS);
@@ -56,4 +57,11 @@ public class Character {
         return hitPoints <= 0;
     }
 
+    public int experiencePoints() {
+        return experiencePoints;
+    }
+
+    public void addExperience(int experience) {
+        experiencePoints += experience;
+    }
 }

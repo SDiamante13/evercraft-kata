@@ -103,4 +103,18 @@ class ABattleShould {
 
         assertThat(enemyCombatant.hitPoints()).isEqualTo(ENEMY_HIT_POINTS - 1);
     }
+
+    @Test
+    void successfulAttacksYieldExperiencePointsToCharacter() {
+        when(twentySidedDie.roll())
+                .thenReturn(HIT_ROLL);
+        Character combatant = new Character("Combatant", Alignment.GOOD);
+        Character enemyCombatant = new Character("Enemy", Alignment.EVIL, 10, ENEMY_HIT_POINTS);
+
+        assertThat(combatant.experiencePoints()).isZero();
+
+        battle.recordAttack(combatant, enemyCombatant);
+
+        assertThat(combatant.experiencePoints()).isEqualTo(10);
+    }
 }
