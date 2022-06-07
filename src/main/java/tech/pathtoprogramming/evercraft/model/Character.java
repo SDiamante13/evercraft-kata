@@ -1,7 +1,5 @@
 package tech.pathtoprogramming.evercraft.model;
 
-import static java.lang.Math.max;
-
 public class Character {
 
     public static final int DEFAULT_ARMOR_CLASS = 10;
@@ -35,11 +33,11 @@ public class Character {
     }
 
     public int armorClass() {
-        return armorClass;
+        return armorClass + abilities.dexterity().modifier();
     }
 
     public int hitPoints() {
-        return hitPoints;
+        return hitPoints + abilities.constitution().modifier();
     }
 
     public Abilities abilities() {
@@ -51,7 +49,7 @@ public class Character {
     }
 
     public boolean isHit(int roll) {
-        return roll >= armorClass + abilities.dexterity().modifier();
+        return roll >= armorClass();
     }
 
     public boolean isDead() {
