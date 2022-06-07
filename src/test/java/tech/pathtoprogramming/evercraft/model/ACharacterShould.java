@@ -69,4 +69,28 @@ class ACharacterShould {
 
         assertThat(tim.isDead()).isTrue();
     }
+
+    @Test
+    void applyTheDexterityModifierToTheArmorClass() {
+        Character tim = new Character(null, null, 10, 5);
+        tim.abilities().setDexterityAbilityWith(14);
+
+        assertThat(tim.armorClass()).isEqualTo(12);
+    }
+
+    @Test
+    void applyTheConstitutionModifierToHitPoints() {
+        Character tim = new Character(null, null, 10, 1);
+        tim.abilities().setConstitutionAbilityWith(16);
+
+        assertThat(tim.hitPoints()).isEqualTo(4);
+    }
+
+    @Test
+    void hitPointsIsAtMinimumOne() {
+        Character tim = new Character(null, null, 10, 1);
+        tim.abilities().setConstitutionAbilityWith(6);
+
+        assertThat(tim.hitPoints()).isEqualTo(1);
+    }
 }

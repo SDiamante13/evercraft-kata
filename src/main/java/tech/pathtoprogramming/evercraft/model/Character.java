@@ -37,7 +37,7 @@ public class Character {
     }
 
     public int hitPoints() {
-        return hitPoints + abilities.constitution().modifier();
+        return Math.max(hitPoints + abilities.constitution().modifier(), 1);
     }
 
     public Abilities abilities() {
