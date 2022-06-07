@@ -64,4 +64,8 @@ public class Character {
     public void addExperience(int experience) {
         experiencePoints += experience;
     }
+
+    public int level() {
+        return (experiencePoints + 1000) / 1000;
+    }
 }

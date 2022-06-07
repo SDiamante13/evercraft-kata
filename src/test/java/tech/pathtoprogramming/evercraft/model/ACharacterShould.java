@@ -93,4 +93,29 @@ class ACharacterShould {
 
         assertThat(tim.hitPoints()).isEqualTo(1);
     }
+
+    @Test
+    void startAtLevelOne() {
+        Character tim = new Character(null, null, 10, 1);
+
+        assertThat(tim.level()).isEqualTo(1);
+    }
+
+    @Test
+    void levelUpEvery1000ExperiencePointsAchieved() {
+        Character tim = new Character(null, null, 10, 1);
+
+        tim.addExperience(1000);
+
+        assertThat(tim.level()).isEqualTo(2);
+    }
+
+    @Test
+    void levelUpEvery1000ExperiencePointsAchievedLevel3() {
+        Character tim = new Character(null, null, 10, 1);
+
+        tim.addExperience(8000);
+
+        assertThat(tim.level()).isEqualTo(9);
+    }
 }
