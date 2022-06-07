@@ -102,16 +102,7 @@ class ACharacterShould {
     }
 
     @Test
-    void levelUpEvery1000ExperiencePointsAchieved() {
-        Character tim = new Character(null, null, 10, 1);
-
-        tim.addExperience(1000);
-
-        assertThat(tim.level()).isEqualTo(2);
-    }
-
-    @Test
-    void levelUpEvery1000ExperiencePointsAchievedLevel3() {
+    void levelUpEvery1000ExperiencePointsAchievedLevel() {
         Character tim = new Character(null, null, 10, 1);
 
         tim.addExperience(8000);
