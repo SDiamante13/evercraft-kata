@@ -88,7 +88,7 @@ class ABattleShould {
 
         battle.recordAttack(combatant, enemyCombatant);
 
-        assertThat(enemyCombatant.hitPoints()).isEqualTo(ENEMY_HIT_POINTS - 10);
+        assertThat(enemyCombatant.hitPoints()).isEqualTo(ENEMY_HIT_POINTS - 9);
     }
 
     @Test
