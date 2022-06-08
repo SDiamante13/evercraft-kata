@@ -16,7 +16,7 @@ public class DungeonMaster {
 
     public void battle(Character combatant, Character enemyCombatant) {
         int attackRoll = twentySidedDie.roll();
-        int modifier = combatant.abilities().calculateModifierFor(attackRoll);
+        int modifier = combatant.modifier(attackRoll);
 
         if (enemyCombatant.isHit(attackRoll + modifier)) {
             int damage = max(1 + modifier, 1);

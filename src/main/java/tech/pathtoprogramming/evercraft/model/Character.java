@@ -4,6 +4,9 @@ public class Character {
 
     public static final int DEFAULT_ARMOR_CLASS = 10;
     public static final int DEFAULT_HIT_POINTS = 5;
+    public static final int CRITICAL_HIT = 20;
+    public static final int CRITICAL_HIT_MULTIPLIER = 2;
+    public static final int CRITICAL_HIT_DAMAGE_BONUS = 1;
 
     private final String name;
     private final Alignment alignment;
@@ -47,6 +50,14 @@ public class Character {
 
     public Abilities abilities() {
         return abilities;
+    }
+
+    public int modifier(int roll) {
+        int criticalHitDamage = roll == CRITICAL_HIT ?
+                abilities.strength().modifier() * CRITICAL_HIT_MULTIPLIER + CRITICAL_HIT_DAMAGE_BONUS :
+                abilities.strength().modifier();
+        int bonusForLevel = level() / 2;
+        return criticalHitDamage + bonusForLevel;
     }
 
     public void take(int amount) {

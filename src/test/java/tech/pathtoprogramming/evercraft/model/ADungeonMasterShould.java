@@ -1,5 +1,6 @@
 package tech.pathtoprogramming.evercraft.model;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import tech.pathtoprogramming.evercraft.TwentySidedDie;
 import tech.pathtoprogramming.evercraft.assertions.NumberAssert;
@@ -73,7 +74,6 @@ class ADungeonMasterShould {
         assertThat(enemy.hitPoints()).isEqualTo(STARTING_ENEMY_HP - 1 - 2);
     }
 
-
     @Test
     void doubleTheStrengthModifierForACriticalHit() {
         Character aHeroWithPlusFourStrengthModifier = aHeroWithStrengthOf(18);
@@ -118,7 +118,7 @@ class ADungeonMasterShould {
 
         assertThat(hero.experiencePoints()).isZero();
 
-        dungeonMaster.battle(aHero(), anEnemy());
+        dungeonMaster.battle(hero, anEnemy());
 
         assertThat(hero.experiencePoints()).isZero();
     }

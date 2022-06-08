@@ -3,6 +3,7 @@ package tech.pathtoprogramming.evercraft.model;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import tech.pathtoprogramming.evercraft.assertions.NumberAssert;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -110,6 +111,24 @@ class ACharacterShould {
         tim.addExperience(8000);
 
         assertThat(tim.level()).isEqualTo(9);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {
+            "1000,1",
+            "3000,2",
+            "5000,3",
+            "7000,4",
+            "9000,5",
+            "11000,6",
+    })
+    void oneIsAddedToAttackRollForEveryEvenLevelAchieved(int experiencePoints, int expectedBonus) {
+        Character tim = new Character(null, null, 10, 1);
+        tim.addExperience(experiencePoints);
+
+        int actualModifier = tim.modifier(10);
+
+        assertThat(actualModifier).isEqualTo(expectedBonus);
     }
 
     @ParameterizedTest
