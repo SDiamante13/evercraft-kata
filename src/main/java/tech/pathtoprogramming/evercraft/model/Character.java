@@ -49,7 +49,7 @@ public class Character {
         return abilities;
     }
 
-    public void takeDamage(int amount) {
+    public void take(int amount) {
         hitPoints -= amount;
     }
 
