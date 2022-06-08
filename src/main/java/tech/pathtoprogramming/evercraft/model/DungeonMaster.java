@@ -8,15 +8,13 @@ public class DungeonMaster {
 
     private final TwentySidedDie twentySidedDie;
 
-    // should dungeon master have many dependencies called heroes? List<Character> heroes?
-
     public static final int XP_FOR_SUCCESSFUL_ATTACK = 10;
 
     public DungeonMaster(TwentySidedDie twentySidedDie) {
         this.twentySidedDie = twentySidedDie;
     }
 
-    public void battle(Character combatant, Character enemyCombatant) { // battle
+    public void battle(Character combatant, Character enemyCombatant) {
         int attackRoll = twentySidedDie.roll();
         int modifier = combatant.abilities().calculateModifierFor(attackRoll);
 
@@ -26,5 +24,4 @@ public class DungeonMaster {
             combatant.addExperience(XP_FOR_SUCCESSFUL_ATTACK);
         }
     }
-
 }

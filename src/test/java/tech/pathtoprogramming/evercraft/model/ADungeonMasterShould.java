@@ -1,8 +1,8 @@
 package tech.pathtoprogramming.evercraft.model;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import tech.pathtoprogramming.evercraft.TwentySidedDie;
+import tech.pathtoprogramming.evercraft.assertions.NumberAssert;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -12,19 +12,21 @@ import static tech.pathtoprogramming.evercraft.model.Character.DEFAULT_ARMOR_CLA
 class ADungeonMasterShould {
     private static final int MISS = 3;
     private static final int HIT = 10;
-    public static final int STARTING_ENEMY_HP = 10;
     private static final int CRITICAL_HIT = 20;
+    public static final int STARTING_ENEMY_HP = 10;
 
     private final TwentySidedDie twentySidedDie = mock(TwentySidedDie.class);
     private final DungeonMaster dungeonMaster = new DungeonMaster(twentySidedDie);
 
+    // region Basic Combat Tests
     @Test
     void notReduceAnyHitPointsFromEnemyCombatantOnAMiss() {
+        Character enemy = anEnemy();
         stubRollOf(MISS);
 
-        dungeonMaster.battle(aHero(), anEnemy());
+        dungeonMaster.battle(aHero(), enemy);
 
-        assertThat(anEnemy().hitPoints()).isEqualTo(STARTING_ENEMY_HP);
+        assertThat(enemy.hitPoints()).isEqualTo(STARTING_ENEMY_HP);
     }
 
     @Test
@@ -46,23 +48,27 @@ class ADungeonMasterShould {
 
         assertThat(enemy.hitPoints()).isEqualTo(STARTING_ENEMY_HP - 2);
     }
+    // endregion Basic Combat Tests
 
+    // region Strength Modifier Tests
     @Test
     void addStrengthModifierToAttackRoll() {
+        Character aHeroWithPlusOneStrengthModifier = aHeroWithStrengthOf(12);
         Character enemy = anEnemyWith(11);
         stubRollOf(HIT);
 
-        dungeonMaster.battle(aHeroWithStrengthOf(12), enemy);
+        dungeonMaster.battle(aHeroWithPlusOneStrengthModifier, enemy);
 
         assertThat(enemy.hitPoints()).isEqualTo(STARTING_ENEMY_HP - 1 - 1);
     }
 
     @Test
     void addStrengthModifierToDamageDealt() {
+        Character aHeroWithPlusTwoStrengthModifier = aHeroWithStrengthOf(14);
         Character enemy = anEnemy();
         stubRollOf(HIT);
 
-        dungeonMaster.battle(aHeroWithStrengthOf(14), enemy);
+        dungeonMaster.battle(aHeroWithPlusTwoStrengthModifier, enemy);
 
         assertThat(enemy.hitPoints()).isEqualTo(STARTING_ENEMY_HP - 1 - 2);
     }
@@ -70,23 +76,28 @@ class ADungeonMasterShould {
 
     @Test
     void doubleTheStrengthModifierForACriticalHit() {
+        Character aHeroWithPlusFourStrengthModifier = aHeroWithStrengthOf(18);
         Character enemy = anEnemy();
         stubRollOf(CRITICAL_HIT);
 
-        dungeonMaster.battle(aHeroWithStrengthOf(18), enemy);
+        dungeonMaster.battle(aHeroWithPlusFourStrengthModifier, enemy);
 
         assertThat(enemy.hitPoints()).isEqualTo(STARTING_ENEMY_HP - 9);
     }
 
     @Test
     void alwaysDealAtLeastOneDamageOnAHit() {
+        Character heroWithNegativeFourStrengthModifier = aHeroWithStrengthOf(3);
         Character enemy = anEnemy();
         stubRollOf(14);
 
-        dungeonMaster.battle(aHeroWithStrengthOf(3), enemy);
+        dungeonMaster.battle(heroWithNegativeFourStrengthModifier, enemy);
 
         assertThat(enemy.hitPoints()).isEqualTo(STARTING_ENEMY_HP - 1);
     }
+    // endregion Strength Modifier Tests
+
+    // region Experience Points Tests
 
     @Test
     void addExperiencePointsToCharacter() {
@@ -97,7 +108,7 @@ class ADungeonMasterShould {
 
         dungeonMaster.battle(hero, anEnemy());
 
-        assertThat(hero.experiencePoints()).isEqualTo(10);
+        NumberAssert.assertThat(hero.experiencePoints()).isTen();
     }
 
     @Test
@@ -111,8 +122,7 @@ class ADungeonMasterShould {
 
         assertThat(hero.experiencePoints()).isZero();
     }
-
-    // move tests out too long of file
+    // endregion Experience Points Tests
 
     private void stubRollOf(int total) {
         when(twentySidedDie.roll())
@@ -121,10 +131,6 @@ class ADungeonMasterShould {
 
     private Character aHero() {
         return new Character("Hero", Alignment.GOOD);
-    }
-
-    private Character aHeroWith(int armorClass, int hitPoints) {
-        return new Character("Hero", Alignment.GOOD, armorClass, hitPoints);
     }
 
     private Character aHeroWithStrengthOf(int score) {
