@@ -1,6 +1,5 @@
 package tech.pathtoprogramming.evercraft.model;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import tech.pathtoprogramming.evercraft.TwentySidedDie;
 import tech.pathtoprogramming.evercraft.assertions.NumberAssert;
@@ -54,6 +53,7 @@ class ADungeonMasterShould {
     // region Strength Modifier Tests
     @Test
     void addStrengthModifierToAttackRoll() {
+        // Llewellyn suggested that I make the SCORE A CONSTANT like MODIFIER_+1
         Character aHeroWithPlusOneStrengthModifier = aHeroWithStrengthOf(12);
         Character enemy = anEnemyWith(11);
         stubRollOf(HIT);

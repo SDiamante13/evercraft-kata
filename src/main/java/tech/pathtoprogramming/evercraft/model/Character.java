@@ -52,6 +52,7 @@ public class Character {
         return abilities;
     }
 
+    // TODO: Rename to damage?
     public int modifier(int roll) {
         int criticalHitDamage = roll == CRITICAL_HIT ?
                 abilities.strength().modifier() * CRITICAL_HIT_MULTIPLIER + CRITICAL_HIT_DAMAGE_BONUS :
