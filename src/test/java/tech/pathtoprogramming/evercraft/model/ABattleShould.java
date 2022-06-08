@@ -117,4 +117,18 @@ class ABattleShould {
 
         assertThat(combatant.experiencePoints()).isEqualTo(10);
     }
+
+    @Test
+    void unsuccessfulAttacksDoNotYieldExperiencePointsToCharacter() {
+        when(twentySidedDie.roll())
+                .thenReturn(MISSED_ROLL);
+        Character combatant = new Character("Combatant", Alignment.GOOD);
+        Character enemyCombatant = new Character("Enemy", Alignment.EVIL);
+
+        assertThat(combatant.experiencePoints()).isZero();
+
+        battle.recordAttack(combatant, enemyCombatant);
+
+        assertThat(combatant.experiencePoints()).isZero();
+    }
 }
